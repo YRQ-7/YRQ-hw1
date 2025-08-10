@@ -1,66 +1,62 @@
-# algebra
-硬件技术团队编程基础作业
-## 课件资料 | Reference
-* [课程PPT](https://tannin-1316822731.cos.ap-nanjing.myqcloud.com/2025-04-19-2025%E7%A1%AC%E4%BB%B6%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E8%AE%AD.pdf)
-* [VSCode的C/C++环境配置教程](https://www.bilibili.com/video/BV1UZ421e7ty/?share_source=copy_web&vd_source=d82c2ec75577b6834f9f580f066180c1)
-* [Git使用教程](https://www.bilibili.com/video/BV1og4y1u7XU/?share_source=copy_web&vd_source=d82c2ec75577b6834f9f580f066180c1)
-## 预修要求｜Requirements
-修读过《C程序设计基础》、《线性代数》以及X·Lab硬件技术团队编程基础课程或其对应的高阶课程。
-## 说明｜Explainations
-本题目的难度对于初学者而言相对较高，主要考察了基础的数学能力、通过编程解决问题的能力以及工程管理、CMake、git等综合能力。该作业的最终得分仅作参考，同学们可根据自己的能力来决定实现哪些函数。
-## 题目背景｜Background
-《线性代数》作为浙江大学工科多数专业必修的数学基础课程，对于其掌握是至关重要的，后续各大专业的专业课程也都离不开线性代数。然而，在后续的专业课程学习中，我们往往只需要计算一些矩阵的数值解，这个过程如果用手去计算的话是十分痛苦的。秉承着“我都学编程了就不要自己做一些无意义的事情”的原则，我们决定实现一个线性代数计算库，来辅助我们进行运算。
-> 当然，如MATLAB、Python等高级编程语言已经可以做到这类事情，且做得更好，但这并不妨碍我们通过这样一种方式来锻炼自己的C语言编程能力。
-## 题目介绍｜Introduction
-本仓库给出了我们在内训中提到的工程模板，同学们要做的任务如下：
-1. 自学git，注册GitHub账号，将本仓库在自己的GitHub账户下Fork一份（注意是Fork，禁止直接clone本仓库到本地，否则你将无法完成后续提交），并按照`yourname_hw1`的格式更改仓库名称（在仓库中的Settings处可修改，记得不要用中文，仓库权限为public，如涉及到隐私保护，可设为private，但要将`tanninrachel@yinlin.wiki`这个账户设置为协作者）。
-2. 将你的仓库clone到本地。
-3. 按照内训所讲的工程模板补充所缺的文件夹。
-4. 根据`inc/algebra.h`中的注释和预定义，在`src/algebra.c`中实现对应的函数。
-5. 根据内训所讲，自行编写`CMakeLists.txt`文件，使你的工程能够在本地成功编译运行。
-6. 自学Markdown，修改`README.md`文件，需要包含你的实现思路（大致描述即可）以及本地运行截图。
-7. 将你的修改提交到远程仓库，并将仓库链接提交（提交方式见下文）。
-## 思路参考｜Thinking
-见`doc`文件夹。
-## 交互格式｜Format
-在本题目中，`main.c`文件已给出，不需要同学们自己实现，也请不要更改这个文件，否则可能出现判题错误。
-### 输入格式
-本题目采用帧判定的思路进行，每一帧的第一行指令代码，`+`、`-`、`*`、`.`、`t`、`d`、`i`、`r`、`j`分别测试`add_matrix`、`sub_matrix`、`mul_matrix`、`scale_matrix`、`transpose_matrix`、`det_matrix`、`inv_matrix`、`rank_matrix`、`trace_matrix`函数，`q`表示退出。
+# 矩阵运算库 (杨荣琦_hw1)
 
-接下来的一行输入矩阵 $\mathbf{A}$ 的行数 $m$ 和列数 $n$ ，在接下来的 $m$ 行中输入 $n$ 个双精度浮点数，以空格分开。
-对于二元运算函数的测试，需要再按照上述过程输入矩阵 $\textbf{B}$ 。
+## 实现思路
 
-可能的一次运行输入如下：
-```
-+
-2 2
-1.1 1.3
-2.4 3.7
-2 2
-3.1 4.3
-5.1 7.1
-+
-2 2
-1.1 1.2
-2.4 3.5
-2 3
-1 2 2.1
-3 2 3.3
-q
-```
-### 输出格式
-在每一帧中，依次根据输入的指令代码运行对应的函数，并给出函数的输出与标准值比对。上述输入的正确输出如下：
-```
-4.20    5.60    
-7.50    10.80
-Error: Matrix a and b must have the same rows and cols.
-```
-## 评分标准｜Standard
-* 成功运行：+25分
-* `add_matrix`、`sub_matrix`、`mul_matrix`、`scale_matrix`、`transpose_matrix`、`trace_matrix`功能正常每个+5分
-* `det_matrix`、`inv_matrix`、`rank_matrix`功能正常共+10分（此处为附加题，有一定难度，可选做）
-> 为了保证题目难度，每个函数具体的评分标准不予公布。
-## 提交方式｜Submit
-将你的每个函数的测试运行结果以截图的形式放在你仓库的`README.md`文件中（请注意Markdown中图片的引用要包含源文件）。并将你的最终代码仓库链接（在浏览器上的那个，不要带有`.git`的）填写如下问卷发送：
+### 1. 项目结构
+- `inc/` 放头文件，主要是 `algebra.h` 里的函数声明
+- `src/` 放实现代码 `algebra.c` 和 `main.c`
+- `build/` 用来存放编译生成的文件
+- `bin/` 用来存放最终的可执行文件
+-  `CMakeLists.txt`
 
-![](https://tannin-1316822731.cos.ap-nanjing.myqcloud.com/2025-04-19-%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E8%AE%AD%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4.png)
+### 2. 函数实现
+
+#### 基础运算（加减乘）
+- **矩阵加法 (`add_matrix`)**：  
+  先检查两个矩阵是否同型，然后就是两层循环逐元素相加
+  
+- **矩阵减法 (`sub_matrix`)**：  
+  和加法类似
+  
+- **矩阵乘法 (`mul_matrix`)**：  
+  三重循环实现行乘列再累加
+
+#### 进阶操作
+- **缩放 (`scale_matrix`)**：  
+  这个相对简单，就是每个元素乘以标量
+  
+- **转置 (`transpose_matrix`)**：  
+  只需要把行列数值互换就行
+  
+- **行列式 (`det_matrix`)**：  
+  用了递归实现，小矩阵还行，大矩阵性能可能不够好
+  
+- **求逆 (`inv_matrix`)**：  
+  最复杂的部分！结合了伴随矩阵和行列式
+  
+- **秩和迹 (`rank_matrix`, `trace_matrix`)**：  
+  迹比较简单，秩的实现参考了高斯消元法
+
+## 本地测试截图
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-09 200422.png")  
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 100500.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 105326.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 150143.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 150551.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 151032.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 160648.png")
+![运行截图]("C:\Users\35418\Pictures\Screenshots\屏幕截图 2025-08-10 160659.png")
+
+
+## 遇到的坑
+1. 重新生成构建文件时要删除原来build里生成的文件
+2. Tab不可以用空格代替
+3. 将仓库clone到本地时总是有个认证缺失的东西，后来暂时把这个关掉了才成功clone
+4. C++惯性以为运行程序一定会弹个运行框出来，所以.\main.exe没有反应之后一度以为哪里出错了，结果继续输入参数程序就可以输出结果了，，
+
+## 总结
+这个项目让我真正理解了：
+- 工程化开发的基本流程
+- 调试复杂逻辑的方法
+
+虽然还有很多优化空间，但第一次完成这样的项目还是挺有成就感的！
